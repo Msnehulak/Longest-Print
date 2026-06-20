@@ -9,6 +9,9 @@ jobs:
   build:
     runs-on: ubuntu-latest 
 
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -26,5 +29,15 @@ jobs:
       - name: Test Program
         run: python main.py
 
+      - name: Commit and Push README
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
+          git add README.md
+          
+          git diff-index --quiet HEAD || git commit -m "Automated README update with latest benchmark times"
+          
+          git pull --rebase origin main
+          git push origin main
 

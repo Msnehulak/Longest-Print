@@ -1,7 +1,9 @@
 import time 
 from deep_translator import GoogleTranslator
+import gc
 
 TARGET_TRANS = ["de", "cs", "en", "pl", "ja", "zh-TW"]
+CHARACTERS = [chr(i) for i in range(0x0020, 0x007F)]   
 
 #   --- functions ---
 stopwatch = []
@@ -26,8 +28,20 @@ def save_load_from_file(inp_text, temp_file = "temp.txt"):
         load_text = f.read()
     return load_text
 
+def long_print(text):
+    for i in text:
+        for x in CHARACTERS:
+            print(x, end="")
+            
+            if x == i:
+                break
+            else:
+                print("\b", end="", flush=True)
+    print()
+
 #   --- Main ---
 # Start 
+print("--- Start")
 stopwatch.append({"name": "start", "des": "start", "time": time.perf_counter(), "duration": 0})
 to_print = "Hello World"
 
@@ -39,9 +53,14 @@ measure("translate")
 load = save_load_from_file(to_print)
 measure('W/R to file', des='write and read to file')
 
-# End 
-print(to_print)
-measure("end")
+# Final Print
+long_print(to_print)
+measure("Long print")
+
+## GC
+gc.collect()
+measure("GC", des='garbage collector')
+print("--- END")
 
 # print 
 total_time = 0
@@ -52,11 +71,10 @@ for stamp in stopwatch:
     if stamp['name'] == "start": continue
     name = str(stamp['name']).capitalize()
     duration = stamp['duration']
-    if stamp['des']: des = f" | {stamp['des']}" 
+    if stamp['des']: des = f"   # {stamp['des']}" 
     else: des = ""
 
     print(f"{name:>15} | {duration:<2.6f}s{des}")
-    
     total_time += duration
 
 print(f"{'='*15}=|={'='*15}")

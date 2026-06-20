@@ -13,6 +13,8 @@ If a specific method (like translation) is used, it cannot be reused within the 
 Action must be connected to print **IN ANY WAY!!!**
 
 ## Functions
+All test's done on GitHub Action server with test `hello world`
+
 ### Translate
 Program request on Google Translate to translate to `de, cs, en, pl, ja, zh-TW`
 
@@ -34,5 +36,10 @@ Force call of garbage collector
 Time Spend: {{ gc }}s
 
 **Note:** it doesn't brake [Rule 3](#3-is-for-print) because it clears RAM after **print**.
+
+### Symbols count
+count symbols in loop.
+
+time Spend {{ cs }}
 
 

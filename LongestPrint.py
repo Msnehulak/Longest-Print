@@ -2,7 +2,14 @@ import time
 from deep_translator import GoogleTranslator
 import gc
 import string
+from colorama import Fore, Back, Style, init
+import random
 
+init(autoreset=True)
+
+FORE_COLORS = [Fore.RED, Fore.GREEN, Fore.BLUE, Fore.YELLOW, Fore.MAGENTA, Fore.CYAN, Fore.WHITE]
+BACK_COLORS = [Back.BLACK, Back.RED, Back.GREEN, Back.YELLOW, Back.BLUE, Back.MAGENTA, Back.CYAN]
+STYLES = [Style.DIM, Style.NORMAL, Style.BRIGHT]
 CHARACTERS = list(
     string.ascii_lowercase +
     string.ascii_uppercase +
@@ -63,11 +70,29 @@ class LongestPrint:
             load_text = f.read()
         return load_text
 
+    def count_symbols(self):
+        symbol_count = {}
+        for char in CHARACTERS:
+            for i in self.to_print:
+                if not i != char:
+                    if char not in symbol_count:
+                        symbol_count[char] = 1
+                    symbol_count[char] += 1
+        print(symbol_count)
+                    
+
+    @staticmethod
+    def _color_print(letter: str, end="\n"):
+        fore = random.choice(FORE_COLORS)
+        back = random.choice(BACK_COLORS)
+        style = random.choice(STYLES)
+        print(back + fore + style + letter, end=end)
+
     def long_print(self):
         for i in self.to_print:
             for x in CHARACTERS: 
                 if x == i:
-                    print(x, end="")
+                    self._color_print(x, end="")
         print()
 
     def main(self):
@@ -81,8 +106,11 @@ class LongestPrint:
         load = self.save_load_from_file()
         self.measure('wr', 'W/R to file', 'write and read to file')
 
+        self.count_symbols()
+        self.measure('cs', 'Count symbols', 'count symbols in bad loop')
+
         self.long_print()
-        self.measure('lp', 'Long print', 'loop in loop print')
+        self.measure('lp', 'LongPrint + RanColor', 'loop in loop print with random color')
 
         gc.collect()
         self.measure('gc', 'Garbage Collector', 'Force start of GC')

@@ -4,22 +4,25 @@ on:
   workflow_dispatch: 
 
 jobs:
-  run-script:
-    runs-block: ubuntu-latest 
+  build:
+    runs-on: ubuntu-latest 
 
     steps:
-    - name: Checkout code 
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Set-up Pythonu
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
+      - name: Set-up Pythonu
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
 
-    - name: Install requirements
-      run: |
-        python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Install requirements
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-    - name: Test Program
-      run: python main.py
+      - name: Test Program
+        run: python main.py
+
+
+

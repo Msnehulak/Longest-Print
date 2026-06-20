@@ -3,8 +3,8 @@ from deep_translator import GoogleTranslator
 
 TARGET_TRANS = ["de", "cs", "en", "pl", "ja", "zh-TW"]
 
+#   --- functions ---
 stopwatch = []
-
 def measure(name, des = None):
     global stopwatch
     time_now = time.perf_counter()
@@ -18,15 +18,16 @@ def translate(inp_text, target_lang=TARGET_TRANS):
     return ret
 
 def save_load_from_file(inp_text, temp_file = "temp.txt"):
+    # Write 
     with open(temp_file, 'w', encoding='utf-8') as f:
         f.write(inp_text)
-
+    # Read
     with open(temp_file, 'r', encoding='utf-8') as f:
         load_text = f.read()
-
     return load_text
 
-# start 
+#   --- Main ---
+# Start 
 stopwatch.append({"name": "start", "des": "start", "time": time.perf_counter(), "duration": 0})
 to_print = "Hello World"
 
@@ -38,13 +39,14 @@ measure("translate")
 load = save_load_from_file(to_print)
 measure('W/R to file', des='write and read to file')
 
-# end 
+# End 
 print(to_print)
 measure("end")
 
 # print 
 total_time = 0
 
+#   --- Print ---
 print()
 for stamp in stopwatch:
     if stamp['name'] == "start": continue
